@@ -266,7 +266,7 @@ class Simulation():
 
             if newPressure > maxPressure: 
                 print(f'We have new pressure!')
-                print(f"Old pressure = {maxPressure} new pressure = {newPressure}")
+                # print(f"Old pressure = {maxPressure} new pressure = {newPressure}")
                 maxPressure = newPressure
         return maxPressure
 

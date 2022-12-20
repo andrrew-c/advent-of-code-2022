@@ -83,12 +83,13 @@ class Monkey():
         else:
 
             modCheck = "v1*v2"
+            
             # Are we squaring it?
-            if self.boredomFactor == 1:
-                if val1 == val2:
-                    val2 = 1
-                else:
-                    pass
+            # if self.boredomFactor == 1:
+            #     if val1 == val2:
+            #         val2 = 1
+            #     else:
+            #         pass
                     # val1 = val1%self.divisor
                     # val2 = val2%self.divisor
                     # bored = 'boredom%divisor'
@@ -100,7 +101,7 @@ def updateWorryLevel({varprefix}, boredom, divisor):
     v1 = {val1} #%divisor
     v2 = {val2} #%divisor
     b = boredom #%divisor
-    return int(({modCheck})/b)
+    return ({modCheck})
     
     
 """
@@ -151,11 +152,17 @@ def updateWorryLevel({varprefix}, boredom, divisor):
             # itemUp = int(itemUp//self.boredomFactor)
     
         # Decide which monkey gets it next (returns index of monkey)
-        itemUp = self.updateWorryLevel(item, self.boredomFactor, self.divisor)
-        nextMonkey = self.decideMonkey(itemUp)
+        item = self.updateWorryLevel(item, self.boredomFactor, self.divisor)
+
+        if self.boredomFactor==1:
+            item %= self.game.monkeymod_product
+        else:
+            item //= self.boredomFactor
+
+        nextMonkey = self.decideMonkey(item)
 
         # Throw item to that monkey
-        self.throw(itemUp, nextMonkey)
+        self.throw(item, nextMonkey)
 
     def processMove(self):
 
@@ -214,6 +221,10 @@ class Game():
         # Add self to each monkey so we can get back
         for monkey in self.monkeys:
             monkey.game = self
+
+        # Chinese remainder theorom - 
+        self.monkeymod_product = np.prod(np.array([m.divisor for m in game.monkeys]))
+        
 
     def initRegEx(self):
 
@@ -304,16 +315,10 @@ print(f"Part 1: {p1_answer}")
 ##########################################
 
 game2 = Game(data_path, boredomFactor=1)
-game2.processRound(20)
+game2.processRound(10000)
 game2.printItems()
 game2.printNInspected()
 
 p2_answer = game2.getMonkeyBusiness()
 print(f"Part 2: {p2_answer}")
 
-def updateWorryLevel(old, boredom, divisor): 
-    v1 = old%divisor
-    v2 = 19%divisor
-    b = boredom%divisor
-    print(f"v1, v2, b = {v1}, {v2}, {b}")
-    return int((v1*v2)/b)
