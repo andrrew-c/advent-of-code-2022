@@ -8,7 +8,7 @@ from datetime import datetime
 dayN = 'day16'
 
 # Day N data
-data_path = f'andrewc_2022/data/{dayN}_input.txt'
+data_path = f'data/{dayN}_input.txt'
 
 # Time left in minutes
 maxTime = 30
@@ -34,24 +34,6 @@ class Valve():
 
         # Each valve started closed
         self.open = False
-
-class Person():
-
-    """ """
-
-    def __init__(self, startValve):
-
-        # What valve am I being initiated at?
-        self.currentValv = startValve
-
-    def moveValv(self):
-
-        """Move from one valve to another 
-            Time passes
-            Update current valve
-        """
-
-        pass
 
 class Simulation():
 
