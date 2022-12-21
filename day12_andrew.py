@@ -9,12 +9,9 @@ data_path = f'data/{dayN}_input.txt'
 
 with open(data_path, 'r') as f: lines = f.readlines()
 
-grid = []
+# grid = []
 
-for line in lines:
-    grid.append([w for w in line if w != '\n'])
-
-flatGrid = [item for g in grid for item in g]
+grid = [[w for w in line if w != '\n'] for line in lines]; flatGrid = [item for g in grid for item in g]
 
 def visualiseNetwork(G, fname='day12_network.html'):
 
@@ -62,7 +59,7 @@ def getEdges(grid):
             if row > 0:
                 up = letterMap[grid[row-1][col]]
                 if (cell >= up) or left-up==1:
-                    edges.append(nodeNum, nodeNum-len(grid[row]))
+                    edges.append((nodeNum, nodeNum-len(grid[row])))
             # Check left
             if col > 0:
                 left = letterMap[grid[row][col-1]]
@@ -79,6 +76,9 @@ edges = getEdges(grid)
 # Create graph object
 G = nx.DiGraph()
 G.add_nodes_from( [(i, dict(title=flatGrid[i])) for i in range(len(flatGrid))])
+# Change colour for 2
+attrs = {i:dict(color='red') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['S','E']]}
+nx.set_node_attributes(G, attrs)
 G.add_edges_from(edges)
 # Visualise network
 visualiseNetwork(G)
