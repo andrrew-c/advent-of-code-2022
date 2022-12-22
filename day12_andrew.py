@@ -76,12 +76,18 @@ edges = getEdges(grid)
 # Create graph object
 G = nx.DiGraph()
 G.add_nodes_from( [(i, dict(title=flatGrid[i])) for i in range(len(flatGrid))])
+
+# Get start/end nodes
+snode, enode = zip([node[0] for node in G.nodes(data=True) if node[1]['title'] in ['S', 'E']])
 # Change colour for 2
-attrs = {i:dict(color='blue') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['S']]}
-attrs.update({i:dict(color='red') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['E']]})
+attrs = {snode[0]:dict(color='blue')}
+attrs.update({enode[0]:dict(color='red')})
 nx.set_node_attributes(G, attrs)
 
+# Add edges
 G.add_edges_from(edges)
 # Visualise network
 visualiseNetwork(G)
+
+
 
