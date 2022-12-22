@@ -40,12 +40,12 @@ def getEdges(grid):
         for col in range(len(grid[row])):
 
             nodeNum += 1
-            print(f"---> nodeNum = {nodeNum}")
+            # print(f"---> nodeNum = {nodeNum}")
 
             cell = letterMap[grid[row][col]]
             
-            print(f"row={row}, col={col}")
-            print(f"cell={cell} value = {flatGrid[nodeNum]}")
+            # print(f"row={row}, col={col}")
+            # print(f"cell={cell} value = {flatGrid[nodeNum]}")
 
             # Check down
             if row < len(grid)-1: 
@@ -66,14 +66,13 @@ def getEdges(grid):
             # Check right
             if col < len(grid[row])-1:
                 right = letterMap[grid[row][col+1]]
-                if nodeNum==20:
-                    print(f"*** 20! cell={cell}, right={right}, col={col}")
                 if (cell >= right) or right-cell==1:
-                    # print(f"Add edge: nodeNum {nodeNum}, nodeNum+1={nodeNum+1}, old cell {grid[row][col]} to {grid[row][col+1]}")
                     edges.append((nodeNum, nodeNum+1))
     return edges
 
+# Get edges from input (directed)
 edges = getEdges(grid)
+
 # Create graph object
 G = nx.DiGraph()
 G.add_nodes_from( [(i, dict(title=flatGrid[i])) for i in range(len(flatGrid))])
@@ -81,6 +80,7 @@ G.add_nodes_from( [(i, dict(title=flatGrid[i])) for i in range(len(flatGrid))])
 attrs = {i:dict(color='blue') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['S']]}
 attrs.update({i:dict(color='red') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['E']]})
 nx.set_node_attributes(G, attrs)
+
 G.add_edges_from(edges)
 # Visualise network
 visualiseNetwork(G)
