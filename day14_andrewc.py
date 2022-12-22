@@ -32,7 +32,7 @@ class Sand():
 
     """ A a unit of sand """
 
-    def __init__(self, grid, startPos=(500, 0), verbose=False):
+    def __init__(self, grid, startPos=(500, 0), verbose=False, part2=False):
 
         """A unit of sand has a starting position (tuple)
             A unit of sand belongs to a grid
@@ -86,7 +86,7 @@ class Sand():
         else:
             return True
 
-    def updatePos(self):
+    def updatePos(self, part2=False):
 
         """ Update sand position by one"""
 
@@ -153,7 +153,7 @@ class Sand():
     
 class Grid():
 
-    def __init__(self, coords):
+    def __init__(self, coords, part2=False):
 
         # Keep a note of the individual coordinates provided - each element represents tuples in a single line of the input
         self.coords = coords
@@ -280,7 +280,7 @@ class Grid():
 
 # Init grid
 grid = Grid(coordsTuples)
-grid.runSimulation()
+# grid.runSimulation()
 
 #############
 ## Part 1
