@@ -28,9 +28,6 @@ for coord in coords:
     tuples = [(int(tup[0]), int(tup[1])) for tup in tuples]
     coordsTuples.append(tuples)
 
-
-
-
 class Sand():
 
     """ A a unit of sand """
@@ -78,8 +75,6 @@ class Sand():
         else:
             return self.currentPos[0]+1, self.currentPos[1]+1
 
-        
-
     def canMove(self, newPos):
 
         """ Return True if cell below is free"""
@@ -90,8 +85,6 @@ class Sand():
             return False
         else:
             return True
-
-
 
     def updatePos(self):
 
@@ -143,7 +136,6 @@ class Sand():
             self.currentPos = self.cellBelow
             self.cellBelow = self.getCellBelow()
             self.positions.append(self.currentPos)
-
 
     def inAbyss(self, newpos):
 
@@ -286,8 +278,7 @@ class Grid():
             # Drop next piece of sand
             self.dropSand()
 
-
-
+# Init grid
 grid = Grid(coordsTuples)
 grid.runSimulation()
 
