@@ -1,23 +1,21 @@
 import string 
 import networkx as nx
 from pyvis.network import Network
-# Update the day number
-dayN = 'day12'
 
-# Day N data
-data_path = f'data/{dayN}_input.txt'
+# Update the day number
+dayN = 'day12' ; data_path = f'data/{dayN}_input.txt'
 
 with open(data_path, 'r') as f: lines = f.readlines()
 
-# grid = []
 
+# Set grid (2-d) and flat version of it
 grid = [[w for w in line if w != '\n'] for line in lines]; flatGrid = [item for g in grid for item in g]
 
-def visualiseNetwork(G, fname='day12_network.html'):
+def visualiseNetwork(G, fname='day12_network.html', directed=True):
 
     """ Use pyvis to visualise network"""
 
-    net = Network()
+    net = Network(directed=True)
     # Visualise networka
     net.from_nx(G)
     print(f"Export visualisation to '{fname}'")
@@ -35,40 +33,43 @@ def getEdges(grid):
     # List of tuples
     edges = []
     
+    # Keep a note of the node we're processing
     nodeNum = -1
     for row in range(len(grid)):
 
         for col in range(len(grid[row])):
 
             nodeNum += 1
-            print(f"nodeNUm = {nodeNum}")
+            print(f"---> nodeNum = {nodeNum}")
 
             cell = letterMap[grid[row][col]]
             
             print(f"row={row}, col={col}")
+            print(f"cell={cell} value = {flatGrid[nodeNum]}")
 
             # Check down
             if row < len(grid)-1: 
                 down = letterMap[grid[row+1][col]]
                 if (cell >= down) or down-cell==1:
-                    print(f"Add edge: nodeNum {nodeNum}, nodeNum+len(grid[row]={nodeNum+len(grid[row])}, old cell {grid[row][col]} to {grid[row+1][col]}")
-                    
                     edges.append((nodeNum, nodeNum+len(grid[row])))
             # Check up
-            
             if row > 0:
                 up = letterMap[grid[row-1][col]]
-                if (cell >= up) or left-up==1:
+                if (cell >= up) or up-cell==1:
                     edges.append((nodeNum, nodeNum-len(grid[row])))
+                    
             # Check left
             if col > 0:
                 left = letterMap[grid[row][col-1]]
                 if (cell >= left) or left-cell==1:
                     edges.append((nodeNum, nodeNum-1))
             # Check right
-            if col < len(grid)-1:
+            if col < len(grid[row])-1:
                 right = letterMap[grid[row][col+1]]
+                if nodeNum==20:
+                    print(f"*** 20! cell={cell}, right={right}, col={col}")
                 if (cell >= right) or right-cell==1:
+                    # print(f"Add edge: nodeNum {nodeNum}, nodeNum+1={nodeNum+1}, old cell {grid[row][col]} to {grid[row][col+1]}")
                     edges.append((nodeNum, nodeNum+1))
     return edges
 
@@ -77,8 +78,10 @@ edges = getEdges(grid)
 G = nx.DiGraph()
 G.add_nodes_from( [(i, dict(title=flatGrid[i])) for i in range(len(flatGrid))])
 # Change colour for 2
-attrs = {i:dict(color='red') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['S','E']]}
+attrs = {i:dict(color='blue') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['S']]}
+attrs.update({i:dict(color='red') for i in [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['E']]})
 nx.set_node_attributes(G, attrs)
 G.add_edges_from(edges)
 # Visualise network
 visualiseNetwork(G)
+
