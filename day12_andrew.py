@@ -1,7 +1,7 @@
 import string 
 import networkx as nx
 from pyvis.network import Network
-
+from tqdm import tqdm
 # Update the day number
 dayN = 'day12' ; data_path = f'data/{dayN}_input.txt'
 
@@ -69,6 +69,7 @@ def getEdges(grid):
                 if (cell >= right) or right-cell==1:
                     edges.append((nodeNum, nodeNum+1))
     return edges
+    
 
 # Get edges from input (directed)
 edges = getEdges(grid)
@@ -99,5 +100,25 @@ p1_shortest = nx.shortest_path(G, snode, enode)
 p1_shortlength = len(p1_shortest) - 1
 
 print(f"Part 1 answer: {p1_shortlength}")
+
+###############
+# Part 2
+###############
+
+# What are the possible starting points
+possStart = [node[0] for node in G.nodes(data=True) if node[1]['title'] in ['a','S']]
+
+shortest = None
+for start in tqdm(possStart):
+    if nx.has_path(G, start, enode):
+        currentLength = len(nx.shortest_path(G, start, enode)) - 1
+        if (shortest is None) or (currentLength < shortest): 
+
+            # Shorest length and node
+            shortest, shortestNode = currentLength, start
+
+        
+
+
 
 
