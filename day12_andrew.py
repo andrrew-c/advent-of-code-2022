@@ -79,9 +79,10 @@ G.add_nodes_from( [(i, dict(title=flatGrid[i])) for i in range(len(flatGrid))])
 
 # Get start/end nodes
 snode, enode = zip([node[0] for node in G.nodes(data=True) if node[1]['title'] in ['S', 'E']])
+snode, enode = snode[0], enode[0]
 # Change colour for 2
-attrs = {snode[0]:dict(color='blue')}
-attrs.update({enode[0]:dict(color='red')})
+attrs = {snode:dict(color='blue')}
+attrs.update({enode:dict(color='red')})
 nx.set_node_attributes(G, attrs)
 
 # Add edges
@@ -89,5 +90,14 @@ G.add_edges_from(edges)
 # Visualise network
 visualiseNetwork(G)
 
+########################################
+# Part 1 - shortest path from S to E
+########################################
+p1_shortest = nx.shortest_path(G, snode, enode)
+
+# Remove the starting node - that isn't a step
+p1_shortlength = len(p1_shortest) - 1
+
+print(f"Part 1 answer: {p1_shortlength}")
 
 
