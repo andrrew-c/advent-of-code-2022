@@ -10,7 +10,7 @@ import matplotlib.animation as animation
 dayN = 'day14'
 
 # Day N data
-data_path = f'andrewc_2022/data/{dayN}_input.txt'
+data_path = f'data/{dayN}_input.txt'
 
 # Regex to extract coords
 rgxXY = re.compile(r'[0-9]+(?:,)[0-9]+')
