@@ -11,7 +11,7 @@ with open(data_path, 'r') as f: lines = f.readlines()
 # Set grid (2-d) and flat version of it
 grid = [[w for w in line if w != '\n'] for line in lines]; flatGrid = [item for g in grid for item in g]
 
-def visualiseNetwork(G, fname='day12_network.html', directed=True):
+def visualiseNetwork(G, fname='outputs/day12_network.html', directed=True):
 
     """ Use pyvis to visualise network"""
 
