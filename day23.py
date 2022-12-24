@@ -49,15 +49,15 @@ class Elf():
 
         othPositions = positions.difference(self.pos)
         # addx0, addx1, addy0, addy1 = -1, 2, -1, 2
-        if direction == 'N' and self.pos[0] > 0:
+        if direction == 'N':
             addx1 = 0
             return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1,self.pos[0]) for j in range(self.pos[1]-1,self.pos[1]+2) if (i,j) != self.pos]))==0
-        elif direction == 'S' and self.pos[0]<maxX:
+        elif direction == 'S':
             addx0 = 1
             return len(othPositions.intersection([(i,j) for i in [self.pos[0]+1] for j in range(self.pos[1]-1,self.pos[1]+2) if (i,j) != self.pos ]))==0
-        elif direction == 'W' and self.pos[1]>0:
+        elif direction == 'W':
             return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1, self.pos[0]+2) for j in [self.pos[1]-1] if (i,j) != self.pos ]))==0
-        elif direction == 'E' and self.pos[1]<maxY:
+        elif direction == 'E':
             return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1,self.pos[0]+2) for j in [self.pos[1]+1] if (i,j) != self.pos ]))==0
         else:
             return False
