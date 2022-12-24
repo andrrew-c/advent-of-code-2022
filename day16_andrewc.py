@@ -1,3 +1,4 @@
+import numpy as np 
 import re
 import networkx as nx
 from pyvis.network import Network
@@ -114,7 +115,7 @@ class Simulation():
         nx.set_node_attributes(G, {'AA':'red'}, 'color')
         return G
         
-    def visauliseNetwork(self, fname='day16_network.html'):
+    def visualiseNetwork(self, fname='outputs/day16_network.html'):
 
         """ Use pyvis to visualise network"""
 
@@ -235,7 +236,8 @@ class Simulation():
 
         iIterations = 0
         maxPressure = 0
-        
+        shortestRoute = -1
+
         # Iterate
         for perm in self.valvePerms:
 
@@ -244,14 +246,23 @@ class Simulation():
                 print(f"Iteration: {iIterations:,} time: {datetime.now()}")
 
             # With a given permuation (route order) - calculate the pressure
-            newPressure = self.processPermutation(perm)
+            # newPressure = self.processPermutation(perm)
 
-            if newPressure > maxPressure: 
-                print(f'We have new pressure!')
-                # print(f"Old pressure = {maxPressure} new pressure = {newPressure}")
-                maxPressure = newPressure
-        return maxPressure
+            route = self.getFastestRoute(perm)
+            if shortestRoute == -1:
+                shortestRoute=route 
+            elif len(shortestRoute) > len(route):
+                shortestRoute = route
+            
+                
+            # if len(route) < len(shortestRoute): shortestRoute = route
 
+        #     if newPressure > maxPressure: 
+        #         print(f'We have new pressure!')
+        #         # print(f"Old pressure = {maxPressure} new pressure = {newPressure}")
+        #         maxPressure = newPressure
+        # return maxPressure
+        return shortestRoute
 # Start simulation
 sim = Simulation(data_path, maxTime=maxTime)
 
@@ -263,3 +274,14 @@ p1_answer = sim.runOverCombos()
 start = datetime.now()
 print(f"Part 1 answer: {p1_answer}")
 print(f"Process took: {datetime.now()-start}")
+
+# Reduce search space
+a = (sim.getFastestRoute(p) for p in sim.valvePerms)
+b = (route for route in a if len(route)<30)
+
+i=0
+for bz in b:
+    i+=1
+    if i%10000==0: print(f"{i:,}")
+
+print(i)
