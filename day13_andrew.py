@@ -3,7 +3,7 @@ import json
 dayN = 'day13'
 
 # Day N data
-data_path = f'andrewc_2022/data/{dayN}_input.txt'
+data_path = f'data/{dayN}_input.txt'
 
 # Read entire file
 with open(data_path, 'r') as f: lines = f.readlines()
@@ -32,6 +32,21 @@ a = [1, [[2,3]]]
 b = [[1,2], [3,4]]
 
 
+def compare_lists(L, R):
+
+    if L is None and R is not None:
+        return True
+    if R is None and L is not None:
+        return True
+
+    if isinstance(L, int) and isinstance(R, int):
+
+        if L < R:
+            return True
+        if L > R:
+            return False
+
+    elif isinstance(L, int) and
 
 def recurList(lst):
     
