@@ -79,20 +79,23 @@ class Elf():
         elif self.PosFree(positions, oldOrder[3]): dir = oldOrder[3]
         if dir is None: return self.pos
         else: return tuple(sum(x) for x in zip(self.pos, moves[dir]))
+
 if __name__ == "__main__":
 
     # Get elves
     elves = [Elf(pos) for pos in [(row, col) for row in range(len(lines)) for col in range(len(lines[row])) if lines[row][col]=='#']]
-# positions = set([e.pos for e in elves])
-# elves[0].Surrounded(positions) 
-# [e.PosFree(positions, 'N') for e in elves]
-# [e.getProposal(positions) for e in elves]
 
-    numRounds = 10
-    for r in range(numRounds):
+    def doRound(elves, part2=False):
 
         # Get positions
         positions = set([e.pos for e in elves])
+
+        if part2:
+            if sum([not e.Surrounded(positions) for e in elves]) == len(elves):
+                print(f"There have been {r:,} rounds until elves stopped moving")
+                return elves
+            else:
+                print(f"There are {len(elves)} elves and {sum([not e.Surrounded(positions) for e in elves])} didn't move")
 
         # Get proposals
         proposals = [e.getProposal(positions) for e in elves]
@@ -101,6 +104,16 @@ if __name__ == "__main__":
         for p in range(len(proposals)):
             if proposals.count(proposals[p]) ==1:
                 elves[p].pos = proposals[p]
+        return elves
+    numRounds = 10
+    
+    for r in range(numRounds):
+
+        # Do a round
+        elves = doRound(elves)
+
+        # Get positions
+        positions = set([e.pos for e in elves])
 
     # elves[0].posOrder
     positions = [e.pos for e in elves]
@@ -118,10 +131,3 @@ if __name__ == "__main__":
     empty_cells = len([cell+1 for cell in [j for i in range(gminX, gmaxX+1) for j in range(gminY, gmaxY+1)]])-len(elves)
     print(f"Part 1 answer = {empty_cells}")
 
-# def outputElves(fname = 'outputs/day23.txt'):
-#     with open(fname, 'wt')
-#     for row in range(len(lines)):
-#         for col in range(len(lines[row])):
-#             pass
-
-# First attempt 2740 (too low)
