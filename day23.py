@@ -33,7 +33,8 @@ class Elf():
         # If no elf is in the surrounding 8 cells
         # return len(positions.difference(self.pos).intersection([(i,j) for i in range(self.pos[0]-1,self.pos[0]+2) for j in range(self.pos[1]-1,self.pos[1]+2) if (i,j) != self.pos and 0<=i<=maxX and 0<=j<=maxY])) > 0
         
-        surround =  [t for t in [tuple(sum(x) for x in zip (self.pos, moves[m])) for m in moves] if 0 <= t[0] <= maxX and 0 <= t[1] <= maxY]
+        # surround =  [t for t in [tuple(sum(x) for x in zip (self.pos, moves[m])) for m in moves] if 0 <= t[0] <= maxX and 0 <= t[1] <= maxY]
+        surround =  [t for t in [tuple(sum(x) for x in zip (self.pos, moves[m])) for m in moves]]
         return len(positions.difference(self.pos).intersection(surround)) > 0 
          
 
@@ -50,14 +51,14 @@ class Elf():
         # addx0, addx1, addy0, addy1 = -1, 2, -1, 2
         if direction == 'N' and self.pos[0] > 0:
             addx1 = 0
-            return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1,self.pos[0]) for j in range(self.pos[1]-1,self.pos[1]+2) if (i,j) != self.pos and 0<=i<=maxX and 0<=j<=maxY]))==0
+            return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1,self.pos[0]) for j in range(self.pos[1]-1,self.pos[1]+2) if (i,j) != self.pos]))==0
         elif direction == 'S' and self.pos[0]<maxX:
             addx0 = 1
-            return len(othPositions.intersection([(i,j) for i in [self.pos[0]+1] for j in range(self.pos[1]-1,self.pos[1]+2) if (i,j) != self.pos and 0 <=i<= maxX and 0<=j<=maxY]))==0
+            return len(othPositions.intersection([(i,j) for i in [self.pos[0]+1] for j in range(self.pos[1]-1,self.pos[1]+2) if (i,j) != self.pos ]))==0
         elif direction == 'W' and self.pos[1]>0:
-            return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1, self.pos[0]+2) for j in [self.pos[1]-1] if (i,j) != self.pos and 0 <=i<= maxX and 0<=j<=maxY]))==0
+            return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1, self.pos[0]+2) for j in [self.pos[1]-1] if (i,j) != self.pos ]))==0
         elif direction == 'E' and self.pos[1]<maxY:
-            return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1,self.pos[0]+2) for j in [self.pos[1]+1] if (i,j) != self.pos and 0 <=i<= maxX and 0<=j<=maxY]))==0
+            return len(othPositions.intersection([(i,j) for i in range(self.pos[0]-1,self.pos[0]+2) for j in [self.pos[1]+1] if (i,j) != self.pos ]))==0
         else:
             return False
 
