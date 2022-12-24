@@ -82,20 +82,17 @@ class Elf():
 
 if __name__ == "__main__":
 
-    # Get elves
-    elves = [Elf(pos) for pos in [(row, col) for row in range(len(lines)) for col in range(len(lines[row])) if lines[row][col]=='#']]
-
-    def doRound(elves, part2=False):
+    def doRound(elves, part2=False, running=False):
 
         # Get positions
         positions = set([e.pos for e in elves])
 
         if part2:
-            if sum([not e.Surrounded(positions) for e in elves]) == len(elves):
-                print(f"There have been {r:,} rounds until elves stopped moving")
-                return elves
+            if sum([e.Surrounded(positions) for e in elves]) == 0:
+                # print(f"There have been {:,} rounds until elves stopped moving")
+                return elves, False
             else:
-                print(f"There are {len(elves)} elves and {sum([not e.Surrounded(positions) for e in elves])} didn't move")
+                if iRound%10 ==0: print(f"Round number {iRound:,}: There are {len(elves)} elves and {sum([not e.Surrounded(positions) for e in elves])} didn't move")
 
         # Get proposals
         proposals = [e.getProposal(positions) for e in elves]
@@ -104,9 +101,17 @@ if __name__ == "__main__":
         for p in range(len(proposals)):
             if proposals.count(proposals[p]) ==1:
                 elves[p].pos = proposals[p]
-        return elves
+        if not part2: return elves
+        else: return elves, running
+
+
+
     numRounds = 10
+
+    # Get elves
+    elves = [Elf(pos) for pos in [(row, col) for row in range(len(lines)) for col in range(len(lines[row])) if lines[row][col]=='#']]
     
+    # Part 1
     for r in range(numRounds):
 
         # Do a round
@@ -115,11 +120,9 @@ if __name__ == "__main__":
         # Get positions
         positions = set([e.pos for e in elves])
 
-    # elves[0].posOrder
+    # Get positions (list)
     positions = [e.pos for e in elves]
-    # positions.sort()
-    # positions
-
+    
     ###############
     # Part 1: Number of empty cell
     ###############
@@ -131,3 +134,13 @@ if __name__ == "__main__":
     empty_cells = len([cell+1 for cell in [j for i in range(gminX, gmaxX+1) for j in range(gminY, gmaxY+1)]])-len(elves)
     print(f"Part 1 answer = {empty_cells}")
 
+    # Part 2:
+
+    running = True
+    iRound = 0
+    elves = [Elf(pos) for pos in [(row, col) for row in range(len(lines)) for col in range(len(lines[row])) if lines[row][col]=='#']]
+    while running:
+        iRound += 1
+        elves, running = doRound(elves, part2=True, running=running)
+
+    print(iRound)
